@@ -15,10 +15,22 @@ const GLTF_PATH = '/assets/card.glb';
 const TEXTURE_PATH = '/assets/band.png';
 const IMAGE_PATH = '/assets/port.png';
 
-useGLTF.preload(GLTF_PATH);
-useTexture.preload(TEXTURE_PATH);
+// preload assets only on the client inside an effect
+// (calling these at module level triggers DOM usage during SSR)
+
+function usePreloadAssets() {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      useGLTF.preload(GLTF_PATH);
+      useTexture.preload(TEXTURE_PATH);
+    }
+  }, []);
+}
 
 export default function App() {
+  // preload models/textures after hydration
+  usePreloadAssets();
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <Canvas camera={{ position: [0, 0, 10], fov: 25 }}>

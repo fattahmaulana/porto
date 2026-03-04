@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
-import Lottie from "react-lottie";
+
+// we'll dynamically load Lottie inside an effect to avoid any server-side evaluation
 
 import { companies } from "@/data";
 import { socialMedia } from "@/data";
@@ -68,6 +69,16 @@ export const BentoGridItem = ({
       setCopied(true);
     }
   };
+
+  // lazily load Lottie component after mount
+  const [LottieComponent, setLottieComponent] = useState<any>(null);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      import("react-lottie").then((mod) => {
+        setLottieComponent(() => mod.default);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (!copied) return;
@@ -194,16 +205,19 @@ export const BentoGridItem = ({
                 tabIndex={-1}
                 className="pointer-events-none absolute -bottom-5 right-0 cursor-default"
               >
-                <Lottie
-                  options={{
-                    loop: copied,
-                    autoplay: copied,
-                    animationData,
-                    rendererSettings: {
-                      preserveAspectRatio: "xMidYMid slice",
-                    },
-                  }}
-                />
+                {/** only render Lottie once it has been loaded on client */}
+                {LottieComponent && (
+                  <LottieComponent
+                    options={{
+                      loop: copied,
+                      autoplay: copied,
+                      animationData,
+                      rendererSettings: {
+                        preserveAspectRatio: "xMidYMid slice",
+                      },
+                    }}
+                  />
+                )}
               </button>
 
               <MagicButton
