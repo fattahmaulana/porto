@@ -21,7 +21,10 @@ const DEFAULT_PIXEL_GRID = [
   "....####....",
   ".....##.....",
 ].flatMap((row) => {
-  const doubledRow = [...row].map((pixel) => pixel.repeat(2)).join("");
+  const doubledRow = row
+    .split("")
+    .map((pixel) => pixel.repeat(2))
+    .join("");
   return [doubledRow, doubledRow];
 });
 
