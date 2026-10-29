@@ -7,13 +7,6 @@ import Image from 'next/image'; // Gunakan <Image /> untuk optimasi gambar
 import styles from './CardSection.module.css'; // Impor CSS Module
 import './global.css'; // Impor CSS global
 
-// Data untuk marquee items
-const marqueeItems = [
-  { text: " Experience & Projects ", img: "/images/image1.png" },
-  { text: " Creative Works ", img: "/images/image1.png" },
-  { text: " Experience & Projects ", img: "/images/image1.png" }
-];
-
 const CardSection: React.FC = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const [isMounted, setIsMounted] = React.useState(false);
@@ -105,26 +98,6 @@ const CardSection: React.FC = () => {
     };
   }, [isMounted]);
 
-  // Fungsi untuk menghasilkan marquee items secara dinamis
-  const generateMarqueeItems = () => {
-    return [...Array(3)].map((_, i) => (
-      <div className={styles.marqueeContent} key={i}>
-        {marqueeItems.map((item, index) => (
-          <React.Fragment key={`${i}-${index}`}>
-            <span>{item.text}</span>
-            <Image
-              src={item.img}
-              alt="Gambar Marquee"
-              width={50}
-              height={50}
-              style={{ objectFit: 'contain' }}
-            />
-          </React.Fragment>
-        ))}
-      </div>
-    ));
-  };
-
   return (
     <div>
       {/* Cards Section */}
@@ -175,15 +148,6 @@ const CardSection: React.FC = () => {
             </div>
           </div>
         ))}
-      </section>
-
-      {/* Footer Section */}
-      <section className={styles.footer}>
-        <div className={styles.marquee}>
-          <div className={styles.marqueeInner}>
-            {generateMarqueeItems()}
-          </div>
-        </div>
       </section>
     </div>
   );

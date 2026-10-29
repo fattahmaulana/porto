@@ -183,21 +183,20 @@ export const BentoGridItem = ({
           </div>
 
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-3">
-  {id === 4 &&
-    companies.map(({ id, img, name }) => (
-      <div key={id} className="flex justify-center">
-        <Image
-          height={29}
-          width={43}
-          src={img}
-          alt={`${name}'s logo`}
-          className="w-10 sm:w-12 md:w-14 invert"
-        />
-      </div>
-    ))}
-</div>
-
-
+            {id === 4 &&
+              companies.map(({ id, img, name }) => (
+                <div key={id} className="flex justify-center">
+                  <Image
+                    height={29}
+                    width={43}
+                    src={img}
+                    alt={`${name}'s logo`}
+                    style={{ filter: "brightness(0) invert(1)" }}
+                    className="w-10 sm:w-12 md:w-14 object-contain"
+                  />
+                </div>
+              ))}
+          </div>
 
           {id === 6 && (
             <div className="group relative mt-5">
