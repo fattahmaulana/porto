@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Upheaval';
+  src: url('/fonts/upheaval.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -105,4 +113,24 @@
   .black-gradient {
     background: linear-gradient(90deg, #000000 0%, #000000 100%);
   }
+
+  .font-skill {
+    font-family: 'Upheaval', sans-serif;
+    letter-spacing: 0.05em;
+  }
+}
+
+@keyframes skill-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.3));
+    opacity: 0.95;
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 45px rgba(255, 255, 255, 0.5));
+    opacity: 1;
+  }
+}
+
+.animate-glow {
+  animation: skill-glow 2.8s ease-in-out infinite;
 }

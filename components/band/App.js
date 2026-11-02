@@ -57,26 +57,28 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
   const { nodes, materials } = useGLTF(GLTF_PATH);
   const texture = useTexture(TEXTURE_PATH);
   const { width, height } = useThree((state) => state.size);
+  const viewport = useThree((state) => state.viewport);
   const [curve] = useState(() => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]));
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
-  
-  // Deteksi mobile berdasarkan lebar layar
-  const isMobile = width < 768;
-  
-  // Posisi responsif untuk card - DIPERBAIKI SINTAKS
-  const cardPosition = isMobile ? [4, 5, 0] : [3, 4, 0];
-  const initialJointPositions = isMobile ? [
-    [0.3, 0, 0], 
-    [0.6, 0, 0], 
-    [0.9, 0, 0], 
-    [1.2, 0, 0]
-  ] : [
-    [3.5, 0, 0], 
-    [4, 0, 0], 
-    [4.5, 0, 0], 
+
+  // Deteksi desktop (hanya di desktop card 3D aktif dan tampil)
+  const isDesktop = width >= 1024;
+
+  // Posisi responsif untuk card
+  const cardPosition = [3, 4, 0];
+  const initialJointPositions = [
+    [3.5, 0, 0],
+    [4, 0, 0],
+    [4.5, 0, 0],
     [5, 0, 0]
   ];
+
+  // Rasio aspek port.png: 3551 x 542 = 6.5516
+  const imageRatio = 3551 / 542;
+  // Di mobile & tablet: 88% lebar layar agar muat pas dengan margin rapi tanpa terpotong
+  const imageWidth = isDesktop ? 10 : Math.min(viewport.width * 0.88, 8.5);
+  const imageHeight = isDesktop ? 1.52 : imageWidth / imageRatio;
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -123,7 +125,7 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
 
   return (
     <>
-      <group position={cardPosition}>
+      <group position={cardPosition} visible={isDesktop}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody position={initialJointPositions[0]} ref={j1} {...segmentProps}>
           <BallCollider args={[0.1]} />
@@ -137,7 +139,7 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
         <RigidBody position={initialJointPositions[3]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
-            scale={isMobile ? 1.5 : 2.25}
+            scale={2.25}
             position={[0, -1.2, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
@@ -151,18 +153,18 @@ function Band({ maxSpeed = 50, minSpeed = 10 }) {
           </group>
         </RigidBody>
       </group>
-      <mesh ref={band} position={[0, 0, 0]} renderOrder={1}>
+      <mesh ref={band} position={[0, 0, 0]} renderOrder={1} visible={isDesktop}>
         <meshLineGeometry />
         <meshLineMaterial color="white" depthTest={false} resolution={[width, height]} useMap map={texture} repeat={[-3, 1]} lineWidth={1} />
       </mesh>
-      
-      {/* Image portofolio - hanya tampil di desktop */}
-      {!isMobile && (
-        <Image url={IMAGE_PATH} position={[0, 0, -2]} scale={[10, 1, 2]} />
-      )}
-      {isMobile && (
-        <Image url={IMAGE_PATH} position={[0, 0, -25]} scale={[10, 1, 2]} />
-      )}
+
+      {/* Tulisan Portofolio - proporsional & pas di tengah untuk Tab, HP & Desktop */}
+      <Image
+        url={IMAGE_PATH}
+        transparent
+        position={[0, 0, isDesktop ? -2 : 0]}
+        scale={[imageWidth, imageHeight, 1]}
+      />
     </>
   );
 }

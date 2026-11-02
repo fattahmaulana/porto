@@ -53,4 +53,9 @@ export const siteConfig: Metadata = {
     name: links.ownerName,
     url: "https://github.com/fattahmaulana",
   },
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 } as const;

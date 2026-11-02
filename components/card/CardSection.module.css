@@ -38,8 +38,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 300px;
-  height: 450px;
+  width: 295px;
+  height: 430px;
   perspective: 1000px;
 }
 
@@ -97,7 +97,6 @@
 }
 
 .flipCardBack {
-  padding: 1em;
   background-color: #000000;
   transform: rotateY(180deg);
 }

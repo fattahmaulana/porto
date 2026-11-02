@@ -27,7 +27,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        "mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-5",
+        "mx-auto grid max-w-7xl grid-cols-1 gap-8 lg:grid-cols-5",
         className
       )}
     >
@@ -153,13 +153,29 @@ export const BentoGridItem = ({
             {title2}
           </div>
 
-          <div className="z-10 font-sans text-sm font-semibold text-[#c1c2d3] md:text-xs lg:text-base whitespace-pre-line">
-            {description2}
-          </div>
+          {id === 1 ? (
+            <div className="z-10 mt-1 flex items-start gap-3 sm:gap-4 font-sans text-sm md:text-xs lg:text-base text-[#c1c2d3]">
+              <span className="font-semibold whitespace-nowrap">2022 – 2026</span>
+              <div className="flex flex-col">
+                <span className="font-semibold">Stikubank University, Semarang</span>
+                <span className="font-light text-white/70">Informatics Engineering</span>
+              </div>
+            </div>
+          ) : (
+            <>
+              {description2 && (
+                <div className="z-10 font-sans text-sm font-semibold text-[#c1c2d3] md:text-xs lg:text-base whitespace-pre-line">
+                  {description2}
+                </div>
+              )}
 
-          <div className="z-10 font-sans text-sm font-light text-[#c1c2d3] md:text-xs lg:text-base whitespace-pre-line ml-10">
-            {description3}
-          </div>
+              {description3 && (
+                <div className="z-10 font-sans text-sm font-light text-[#c1c2d3] md:text-xs lg:text-base whitespace-pre-line ml-10">
+                  {description3}
+                </div>
+              )}
+            </>
+          )}
           
           <div className="flex items-center gap-6 md:gap-3 mt-6">
             {id !== 4 &&
